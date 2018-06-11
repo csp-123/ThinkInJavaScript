@@ -13,4 +13,69 @@
 		1. JavaScript采用UTF-16编码的Unicode字符集，最常用的Unicode字符都是通过16位内码显示，并代表字符串中的单个字符，
 			那些不能表示为16位Unicode字符则遵循UTF-16编码规则---用两个16位值
 	3.4 null和undefined
-		
+		null == undefined true   null === undefined false
+	3.5 全局对象
+		1. 全局属性
+			比如undefined、Infinity和NaN
+		2. 全局函数
+			比如isNaN()、parseInt()和eval()
+		3. 构造函数
+			比如Date()、RegExp()、String()、Object()和Array()
+		4. 全局对象
+			比如Math和JSON
+	3.6 包装对象
+		1. 字符串既然不是对象，为什么它会有属性？
+			只要引用了字符串的属性，JavaScript就会将字符串值通过调用new String(s)的方式转换成对象，这个对象继承了字符串的方法，并被用来处理属性的引用。
+			一旦属性引用结束，这个新创建的对象就会销毁（其实在实现上并不一定创建或销毁这个临时对象，然而整个过程看起来是这样）。
+			同字符串一样，数字和布尔值也具有各自的方法。通过Number()和Boolean()构造函数创建一个临时对象，这些的方法的调用均来自这个临时对象。
+			null和undefined没有包装对象：访问他们的属性会造成一个类型错误。
+
+			var s = "test"; //创建一个字符串
+			s.len = 4;      //设置一个属性   创建一个临时字符串对象，并给其len属性赋值为4，随即销毁这个对象
+			var t = s.len;  //查询这个属性   通过原始的（没有修改过）字符串值创建一个新的字符串对象，尝试读取其len属性，这个属性不存在，结果为undefined。
+			这个结果说明，在读取字符串、数字和布尔值的属性值（或方法）时，表现的像对象一样。但如果你试图给其属性赋值，则会忽略这个操作，修改只发生在临时
+			对象身上，而临时对象并未继续保留下来。
+
+			存取字符串、数字或布尔值的属性时创建的临时对象称为包装对象，它只是偶尔用来区分字符串值和字符串对象。
+			由于字符串、数字和布尔值的属性都是只读的，并且不能定义新属性，因此它们有别于对象。
+
+			var s = "test", n = 1, b = true;
+			var S = new String(s);
+			var N = new Number(n);
+			var B = new Boolean(b);
+			s
+			"test"
+			n
+			1
+			b
+			true
+			S
+			String {"test"}
+			N
+			Number {1}
+			B
+			Boolean {true}
+			s == S
+			true
+			n == N
+			true
+			b == B
+			true
+			s ===S
+			false
+			n === N
+			false
+			b === B
+			false
+			typeof s
+			"string"
+			typeof S
+			"object"
+			typeof n
+			"number"
+			typeof N
+			"object"
+			typeof b
+			"boolean"
+			typeof B
+			"object"
