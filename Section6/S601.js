@@ -80,7 +80,7 @@ function inherit(p) {
     return new f();
 }
 
-var o = {x: "don't change this value"};
+var o = { x: "don't change this value" };
 //library_function(inherit(o));  //防止对o意外修改
 
 
@@ -95,13 +95,13 @@ var o = {x: "don't change this value"};
  * 是由对象o调用的，而不是定义这个属性的原型对象调用的。因此如果setter方法定义任意属性，这个操作只是针对o本身，并不会修改原型链。
  */
 
-var o = {};  //o从Object.prototype 继承对象的方法
-o.x = 1;	 //给o定义一个属性x
-var p = inherit(o);	//p 继承 o 和 Object.prototype
-p.y = 2;	//给 p 定义一个属性y
-var q = inherit(p);	//q 继承 p、o和Object.prototype
-q.z = 3;	// 给 q 定义一个属性z
-var s = q.toString();	//	toString() 继承自 Object.prototype
+var o = {}; //o从Object.prototype 继承对象的方法
+o.x = 1; //给o定义一个属性x
+var p = inherit(o); //p 继承 o 和 Object.prototype
+p.y = 2; //给 p 定义一个属性y
+var q = inherit(p); //q 继承 p、o和Object.prototype
+q.z = 3; // 给 q 定义一个属性z
+var s = q.toString(); //	toString() 继承自 Object.prototype
 console.log(s);
 console.log(q.x + q.y);
 
