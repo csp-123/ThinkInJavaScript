@@ -25,6 +25,16 @@ while (i < 10) {
 a.length = i;
 
 var total = 0;
-for(var j = 0; j < a.length; j++)
-	total += a[j];
+for (var j = 0; j < a.length; j++)
+    total += a[j];
 console.log(total);
+
+function isArrayLike(o) {
+    if (o && typeof o === "object" &&
+        isFinite(o.length) && //o.length是有限数值
+        o.length >= 0 &&
+        o.length < 4294967296) //小于 2^32
+        return true;
+    else
+        return false;
+}
