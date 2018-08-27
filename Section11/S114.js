@@ -64,9 +64,22 @@ console.log("********************");
 // yield和return 区别在于, 使用yield的函数 "产生" 一个可保持函数内部状态的值, 这个值是可以恢复的.
 
 // 针对一个整数范围定义一个生成器函数
-function range(min, max) {
-	for(let i = Math.ceil(min); i <= max; i++)
-		yield i;
-}
-for(let n in range(3, 8))
-	console.log(n);
+/*function range(min, max) {
+    for(let i = Math.ceil(min); i <= max; i++)
+        yield i;
+}*/
+/*for(let n in range(3, 8))
+    console.log(n);*/
+
+//[x, y] = [y, x];
+
+
+/**
+ * 11.4.4 数组推导
+ */
+let eventsquares = [x * x
+    for (x in range(0, 10))
+        if (x % 2) === 0
+];
+
+console.log(eventsquares);
