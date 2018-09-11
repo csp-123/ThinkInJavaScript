@@ -1,3 +1,4 @@
+version(170)
 /**
  * 11.4 迭代
  * for/each 循环和for/in 循环非常相似. (E4X规范)
