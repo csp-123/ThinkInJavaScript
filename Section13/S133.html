@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>JavaScript程序的执行</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="no-cache" http-equiv="Cache-Control">
+    <meta content="no-cache" http-equiv="Pragma">
+    <meta content="0" http-equiv="Expires">
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+1. 客户端JavaScript程序是由Web页面中所包含的所有JavaScript代码(内联脚本,HTML事件处理程序和JavaScript: URL)
+	和通过<xmp><script></script></xmp>标签的src属性引用的外部JavaScript代码组成.<br><br>
+
+2. 这些代码共用一个全局Window对象, 这意味着有相同的Document对象, 
+	可以共享相同的全局函数和变量集合;如果一个脚本定义了新的全局变量或函数, 那么那个变量或函数会在脚本执行之后全局可见.<br><br>
+
+3. 如果Web页面包含一个嵌入的窗体(通常使用iframe元素), 
+	嵌入文档中的JavaScript代码和被嵌入的文档代码会有不同全局对象.<br><br>
+
+13.3.4 客户端 JavaScript 时间线<br><br>
+1. Web浏览器创建Document对象, 并且开始解析Web页面, 解析HTML元素和它们的文本内容后添加Element对象和Text<br>
+	节点到文档中. 在这个阶段document.readystate属性的值是 "loading".<br><br>
+2. 当HTML解析器遇到没有async和defer属性的script元素时, 它把这些元素添加到文档中, 然后执行行内或外部<br>
+	脚本.这些脚本会同步执行,并且在脚本下载(若需要)和执行时解析器会暂停. 这样脚本就可以用document.write<br>
+	来把文本插入到输入流中. 解析器恢复时这些文本会成为文档的一部分. 同步脚本经常简单定义函数和注册后面<br>
+	使用的注册事件处理程序, 但它们可以遍历和操作文档树, 因为在他们执行时已经存在了. 这样, 同步脚本可以看到它自己的script元素和它们之前的文档内容. <br><br>
+3. 当解析器遇到设置了async属性的script元素时, 它开始下载脚本文本, 并继续解析文档. 脚本会在它下载完成后<br>
+	尽快执行, 但解析器没有停下来等它下载. 异步脚本禁止使用document.write方法.它们可以看到自己的script<br>
+	元素和它之前的所有文档元素, 并且可能或干脆不可能访问其他的文档内容. <br><br>
+4. 当文档完成解析, document.readyState属性编程 "interactive". <br><br>
+5. 所有有defer属性的脚本, 会按照它们在文档里的出现顺序执行. 异步脚本可能也会在这个时间执行. 延迟脚本<br>
+	能访问完整的文档树, 禁止使用document.write()方法.<br><br>
+6. 浏览器在Document对象触发DOMContentLoaded事件. 这标志着程序执行从同步脚本执行阶段转换到异步事件驱动<br>
+	阶段. 但要注意, 这时可能还有异步脚本没有执行完成. <br><br>
+7. 这时, 文档已经完全解析完成, 但是浏览器可能还在等待其他内容载入, 如图片. 当所有这些内容完成载入时,<br>
+	并且所有异步脚本完成载入和执行, document.readystate属性会变为 "complete", Web浏览器会触发Window<br>
+	对象上的load事件. <br><br>
+8. 从此刻起, 会调用异步事件, 以异步响应用户输入事件, 网络事件, 计时器过期等.
+</body>
+</html>
