@@ -2,15 +2,15 @@
  * 在函数体内，局部变量的优先级高于同名的全局变量
  * 如果在函数体内声明一个局部变量或者函数参数中带有的变量和全局变量重名，那么全局变量会被局部变量所遮盖
  */
- var scope = "global";
+var scope = "global";
 
- function checkscope() {
- 	var scope = "local";
- 	console.info(scope);
- 	return scope;
- }
- console.info(checkscope());
- console.info(scope);
+function checkscope() {
+    var scope = "local";
+    console.info(scope);
+    return scope;
+}
+console.info(checkscope());
+console.info(scope);
 /*output
 local
 local
@@ -22,9 +22,9 @@ console.info("*************END************");
 scope1 = "global";
 
 function checkscope2() {
-	scope1 = "local";
-	myscope = "local";
-	return [scope1, myscope];
+    scope1 = "local";
+    myscope = "local";
+    return [scope1, myscope];
 }
 console.info(checkscope2());
 console.info(scope1);
@@ -38,14 +38,15 @@ console.info("*************END************");
 var scope2 = "global scope";
 
 function checkscope3() {
-	var scope2 = "local scope";
-	function nested() {
-		var scope2 = "nested scope";
-		console.info(scope2);
-		return scope2;
-	}
-	console.info(nested());
-	return nested();
+    var scope2 = "local scope";
+
+    function nested() {
+        var scope2 = "nested scope";
+        console.info(scope2);
+        return scope2;
+    }
+    console.info(nested());
+    return nested();
 }
 console.info(checkscope3());
 /*
@@ -62,15 +63,15 @@ console.info("*************END************");
  * @return {[type]}   [description]
  */
 function test(o) {
-	var i = 0;							// i 在整个函数体内都有定义 
-	if(typeof o == "object") {
-		var j  = 0;						// j 在整个函数体内都有定义，不仅仅在这个代码段
-		for(var k = 0; k < 10; k++) {	// k 在函数体内是有定义的，不仅仅在循环内
-			console.info(k);
-		}
-		console.info(k);
-	}
-	console.info(j);
+    var i = 0; // i 在整个函数体内都有定义 
+    if (typeof o == "object") {
+        var j = 0; // j 在整个函数体内都有定义，不仅仅在这个代码段
+        for (var k = 0; k < 10; k++) { // k 在函数体内是有定义的，不仅仅在循环内
+            console.info(k);
+        }
+        console.info(k);
+    }
+    console.info(j);
 }
 
 test(new Object());
@@ -83,10 +84,11 @@ console.info("*************END************");
  * @type {String}
  */
 var scope3 = "global";
+
 function f() {
-	console.info(scope3);
-	var scope3 = "local";
-	console.info(scope3);
+    console.info(scope3);
+    var scope3 = "local";
+    console.info(scope3);
 }
 
 f();
