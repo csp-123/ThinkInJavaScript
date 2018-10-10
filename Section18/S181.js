@@ -187,3 +187,71 @@ function postFormData(url, data, callback) {
 	// send()会自动设置Content_Type头
 	request.send(formdata);
 }
+
+/**
+ * 实现超时
+ * 发起HTTP GET请求获取指定URL的内容
+ * 如果响应成功到达, 传入responseText给回调函数
+ * 如果响应在timeout毫秒内没有到达, 终止这个请求
+ * 浏览器可能在abort()后出发"readystatechange"
+ * 如果是部分请求结果到达, 甚至可能设置status属性
+ * 所以需要设置一个标记, 当部分且超时的响应到达时不会调用回调函数
+ * 如果使用load事件就没有这个风险
+ */
+function timeGetText(url, timeout, callback) {
+	var request = new XMLHttpRequest();
+	var timeout = false;
+	// 启动定时器, 在timeout毫秒后将终止请求
+	var timer = setTimeout(function() {
+		timeout = true;
+		request.abort(); // 终止请求
+	}, timeout);
+	request.open("GET", url);
+	request.onreadystatechange = function() {
+		if(request.readyState !== 4) return;
+		if(timeout) return;
+		clearTimeout(timer);
+		if(request.status === 200)
+			callback(request.responseText);
+	}
+	request.send(null);
+}
+
+/**
+ * 使用script元素发送JSONP请求
+ * 根据指定的URL发送一个JSONP请求
+ * 然后把解析得到的响应数据传递给回调函数
+ * 在URL中添加一个名为jsonp的查询参数, 用于指定该请求的回调函数的名称
+ */
+function getJSONP(url, callback) {
+	// 为本次请求创建一个唯一的回调函数名称
+	var cbnum = "cb" + getJSONP.counter++; // 每次自增计数器
+	var cbname = "getJSONP." + cbnum; // 作为JSONP函数的属性
+
+	// 将回调函数名称以表单编码的形式添加到URL的查询部分中
+	// 使用jsonp作为参数名, 一些支持JSONP的服务
+	// 可能使用其他的参数名, 比如callback
+	if(url.indexOf("?") === -1)
+		url += "?jsonp=" + cbname;
+	else
+		url += "&jsonp=" + cbname;
+
+	// 创建script元素用于发送请求
+	var script = document.createElement("script");
+
+	// 定义将被脚本执行的回调函数
+	getJSONP[cbnum] = function(response) {
+		try{
+			callback(response);
+		}
+		finally{
+			delete getJSONP[cbnum];
+			script.parentNode.removeChild(script);
+		}
+	};
+	// 立即触发HTTP请求
+	script.src = url;
+	document.body.appendChild(script);
+}
+
+getJSONP.counter = 0;
